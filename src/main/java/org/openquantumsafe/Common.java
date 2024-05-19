@@ -45,7 +45,7 @@ public class Common {
         } else if (Common.isMac()) {
             libName = "liboqs-jni.jnilib";
         } else if (Common.isWindows()) {
-            libName = "oqs-jni.dll";
+            libName = "liboqs-jni.dll";
         }
         URL url = KEMs.class.getResource("/" + libName);
         if(url == null) {

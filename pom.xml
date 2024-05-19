@@ -75,6 +75,21 @@
                 <java.os.include>-I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux</java.os.include>
             </properties>
         </profile>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <property>
+                    <name>platform</name>
+                    <value>windows</value>
+                </property>
+            </activation>
+            <properties>
+                <lib_name>liboqs-jni.dll</lib_name>
+                <liboqs.include.dir>"C:/Program Files (x86)/liboqs/include"</liboqs.include.dir>
+                <liboqs.lib.dir>"C:/Program Files (x86)/liboqs/lib"</liboqs.lib.dir>
+                <java.os.include>-I${JAVA_HOME}/include -I${JAVA_HOME}/include/win32</java.os.include>
+            </properties>
+        </profile>
     </profiles>
 
     <build>
