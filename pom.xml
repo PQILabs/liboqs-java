@@ -62,7 +62,6 @@
         <profile>
             <id>linux</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
                 <property>
                     <name>platform</name>
                     <value>nix</value>
