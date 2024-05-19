@@ -167,17 +167,6 @@
                         <linkerEndOption>-loqs</linkerEndOption>
                     </linkerEndOptions>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>generate-shared-oqs-library</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>initialize</goal>
-                            <goal>compile</goal>
-                            <goal>link</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>

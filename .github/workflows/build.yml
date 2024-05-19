@@ -45,10 +45,11 @@ jobs:
           mkdir build
           cd build
           cmake .. -G"Ninja" -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON
-          if [ "${{ matrix.os }}" != "windows-latest" ]; then
-            sudo ninja install
+          if command -v sudo &> /dev/null
+          then
+              sudo ninja install
           else
-            ninja install
+              ninja install
           fi
         working-directory: liboqs
 
