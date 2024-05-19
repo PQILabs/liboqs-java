@@ -56,6 +56,7 @@ jobs:
           cd build
           cmake .. -G"Ninja" -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON
           sudo ninja install
+        working-directory: liboqs
 
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v4
