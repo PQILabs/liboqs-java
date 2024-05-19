@@ -30,7 +30,7 @@ public class Common {
     public static void loadNativeLibrary() {
         // If the library is in the java library path, load it directly. (e.g., -Djava.library.path=src/main/resources)
         try {
-            System.loadLibrary("oqs-jni");
+            System.loadLibrary("liboqs-jni");
         // Otherwise load the library from the liboqs-java.jar
         } catch (UnsatisfiedLinkError e) {
             System.out.println("Native library not found in java.library.path. Loading from JAR...");
@@ -39,7 +39,7 @@ public class Common {
     }
 
     private static void loadNativeLibraryFromResources() {
-        String libName = "llliboqs-jni.so";
+        String libName = "liboqs-jni.so";
         if (Common.isLinux()) {
             libName = "liboqs-jni.so";
         } else if (Common.isMac()) {
