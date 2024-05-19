@@ -45,12 +45,6 @@ jobs:
           mkdir build
           cd build
           cmake .. -G"Ninja" -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON
-          if command -v sudo &> /dev/null
-          then
-              sudo ninja install
-          else
-              ninja install
-          fi
         working-directory: liboqs
 
       - name: Set up JDK ${{ matrix.java-version }}
@@ -62,19 +56,22 @@ jobs:
       - if: matrix.os == 'macos-latest'
         name: Resolve all maven project dependencies and build liboqs-java for MacOS
         run: |
-          export DYLD_LIBRARY_PATH="$DYLD_LIBRARY_PATH:$(pwd)/liboqs/build/lib"
+          sudo ninja install
+          export DYLD_LIBRARY_PATH="$DYLD_LIBRARY_PATH:$(pwd)/liboqs/build/bin"
           mvn package -P macosx
 
       - if: matrix.os == 'ubuntu-latest'
         name: Resolve all maven project dependencies and build liboqs-java for Linux
         run: |
-          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$(pwd)/liboqs/build/lib"
+          sudo ninja install
+          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$(pwd)/liboqs/build/bin"
           mvn package -P linux
 
       - if: matrix.os == 'windows-latest'
         name: Resolve all maven project dependencies and build liboqs-java for Windows
         run: |
-          set PATH=%PATH%;%CD%\liboqs\build\lib
+          ninja install
+          set PATH=%PATH%;%CD%\liboqs\build\bin
           mvn package -P windows
 
       - name: Compile KEM, Signatures and Rand examples
