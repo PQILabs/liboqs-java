@@ -24,18 +24,18 @@ jobs:
         with:
           submodules: true  # Fetch submodules
 
-      - name: Install dependencies to build liboqs
-        if: matrix.os == 'windows-latest'
+      - if: matrix.os == 'windows-latest'
+        name: Install dependencies to build liboqs
         run: |
           choco install cmake ninja openssl
 
-      - name: Install dependencies to build liboqs
-        if: matrix.os == 'macos-latest'
+      - if: matrix.os == 'macos-latest'
+        name: Install dependencies to build liboqs
         run: |
           brew install cmake ninja openssl
 
-      - name: Install dependencies to build liboqs
-        if: matrix.os == 'ubuntu-latest'
+      - if: matrix.os == 'ubuntu-latest'
+        name: Install dependencies to build liboqs
         run: |
           sudo apt update -qq
           sudo apt install -y cmake build-essential ninja-build libssl-dev
@@ -62,7 +62,7 @@ jobs:
       - if: matrix.os == 'macos-latest'
         name: Resolve all maven project dependencies and build liboqs-java for MacOS
         run: |
-          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
+          export DYLD_LIBRARY_PATH="$DYLD_LIBRARY_PATH:/usr/local/lib"
           mvn package -P macosx
 
       - if: matrix.os == 'ubuntu-latest'
@@ -74,7 +74,7 @@ jobs:
       - if: matrix.os == 'windows-latest'
         name: Resolve all maven project dependencies and build liboqs-java for Windows
         run: |
-          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
+          set PATH=%PATH%;"C:/Program Files (x86)/liboqs/lib"
           mvn package -P windows
 
       - name: Compile KEM, Signatures and Rand examples
