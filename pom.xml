@@ -98,10 +98,9 @@
                 <executions>
                     <execution>
                         <id>default-jar</id>
-                        <phase>none</phase>
+                        <phase>package</phase>
                         <configuration>
-                            <finalName>unwanted</finalName>
-                            <classifier>unwanted</classifier>
+                            <classifier>jar-with-dependencies</classifier>
                         </configuration>
                     </execution>
                 </executions>
