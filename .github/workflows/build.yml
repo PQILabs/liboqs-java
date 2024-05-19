@@ -69,21 +69,18 @@ jobs:
         run: |
           export DYLD_LIBRARY_PATH="$DYLD_LIBRARY_PATH:/usr/local/lib"
           mvn package -P macosx
-        continue-on-error: true
 
       - if: matrix.os == 'ubuntu-latest'
         name: Resolve all maven project dependencies and build liboqs-java for Linux
         run: |
           export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
           mvn package -P linux
-        continue-on-error: true
 
       - if: matrix.os == 'windows-latest'
         name: Resolve all maven project dependencies and build liboqs-java for Windows
         run: |
           $env:PATH = $env:PATH + ";" + "C:/Program Files (x86)/liboqs/bin/"
           mvn package -P windows
-        continue-on-error: true
 
       - name: Compile KEM, Signatures and Rand examples
         run: |
