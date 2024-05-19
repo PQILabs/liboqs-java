@@ -84,13 +84,13 @@ jobs:
 
       - name: Compile KEM, Signatures and Rand examples
         run: |
-          javac -cp target/liboqs-java.jar examples/KEMExample.java
-          javac -cp target/liboqs-java.jar examples/SigExample.java
-          javac -cp target/liboqs-java.jar examples/RandExample.java
+          javac -cp target/liboqs-java-jar-with-dependencies.jar examples/KEMExample.java
+          javac -cp target/liboqs-java-jar-with-dependencies.jar examples/SigExample.java
+          javac -cp target/liboqs-java-jar-with-dependencies.jar examples/RandExample.java
 
       - name: Run KEM, Signatures and Rand examples
         run: |
           export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
-          java -Djava.library.path=target/ -cp target/liboqs-java.jar:examples/ KEMExample
-          java -Djava.library.path=target/ -cp target/liboqs-java.jar:examples/ SigExample
-          java -Djava.library.path=target/ -cp target/liboqs-java.jar:examples/ RandExample
+          java -Djava.library.path=target/ -cp target/liboqs-java-jar-with-dependencies.jar:examples/ KEMExample
+          java -Djava.library.path=target/ -cp target/liboqs-java-jar-with-dependencies.jar:examples/ SigExample
+          java -Djava.library.path=target/ -cp target/liboqs-java-jar-with-dependencies.jar:examples/ RandExample
