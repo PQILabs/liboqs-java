@@ -63,6 +63,7 @@ jobs:
         with:
           java-version: ${{ matrix.java-version }}
           distribution: 'temurin'
+          cache: 'maven'
 
       - if: matrix.os == 'macos-latest'
         name: Resolve all maven project dependencies and build liboqs-java for MacOS
