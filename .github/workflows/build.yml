@@ -79,7 +79,7 @@ jobs:
       - if: matrix.os == 'windows-latest'
         name: Resolve all maven project dependencies and build liboqs-java for Windows
         run: |
-          set PATH=%PATH%;%CD%\liboqs\build\bin
+          $env:PATH = $env:PATH + ";" + (Get-Location).Path + "\liboqs\build\bin"
           mvn package -P windows
 
       - name: Compile KEM, Signatures and Rand examples
