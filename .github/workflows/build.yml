@@ -17,14 +17,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+        with:
+          submodules: true  # Fetch submodules
+          
       - name: Install dependencies to build liboqs
         run: |
           sudo apt update -qq
           sudo apt install -y cmake build-essential ninja-build libssl-dev
-
-      - name: Clone liboqs
-        run: git clone --branch main --single-branch --depth 1 https://github.com/open-quantum-safe/liboqs.git
 
       - name: Build liboqs
         run: |
