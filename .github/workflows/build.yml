@@ -25,17 +25,20 @@ jobs:
           submodules: true  # Fetch submodules
           
       - name: Install dependencies to build liboqs
+        if: matrix.os == 'windows-latest'
         run: |
-          if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
-            sudo apt update -qq
-            sudo apt install -y cmake build-essential ninja-build libssl-dev
-          elif [ "${{ matrix.os }}" = "windows-latest" ]; then
-            # Add Windows specific commands to install dependencies
-            choco install cmake ninja openssl
-          elif [ "${{ matrix.os }}" = "macos-latest" ]; then
-            # Add macOS specific commands to install dependencies
-            brew install cmake ninja openssl
-          fi
+          choco install cmake ninja openssl
+          
+      - name: Install dependencies to build liboqs
+        if: matrix.os == 'macos-latest'
+        run: |
+          brew install cmake ninja openssl
+          
+      - name: Install dependencies to build liboqs
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt update -qq
+          sudo apt install -y cmake build-essential ninja-build libssl-dev
 
       - name: Build liboqs
         run: |
