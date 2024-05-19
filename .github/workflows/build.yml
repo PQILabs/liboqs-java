@@ -67,20 +67,20 @@ jobs:
       - if: matrix.os == 'macos-latest'
         name: Resolve all maven project dependencies and build liboqs-java for MacOS
         run: |
-          export DYLD_LIBRARY_PATH="$DYLD_LIBRARY_PATH:$(pwd)/liboqs/build/bin"
-          mvn package -P macosx
+          export DYLD_LIBRARY_PATH="$DYLD_LIBRARY_PATH:/usr/local/lib"
+          mvn package -P macosx -Djava.library.path=/usr/local/lib
 
       - if: matrix.os == 'ubuntu-latest'
         name: Resolve all maven project dependencies and build liboqs-java for Linux
         run: |
-          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$(pwd)/liboqs/build/bin"
-          mvn package -P linux
+          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
+          mvn package -P linux -Djava.library.path=/usr/local/lib
 
       - if: matrix.os == 'windows-latest'
         name: Resolve all maven project dependencies and build liboqs-java for Windows
         run: |
-          $env:PATH = $env:PATH + ";" + (Get-Location).Path + "\liboqs\build\bin"
-          mvn package -P windows
+          $env:PATH = $env:PATH + ";" + "C:/Program Files (x86)/liboqs/bin/"
+          mvn package -P windows -Djava.library.path="C:/Program Files (x86)/liboqs/bin/"
 
       - name: Compile KEM, Signatures and Rand examples
         run: |
