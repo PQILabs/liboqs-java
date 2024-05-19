@@ -1,0 +1,61 @@
+name: Build and Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  openjdk-11:
+    name: Build and Test on OpenJDK 11
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies to build liboqs
+        run: |
+          sudo apt update -qq
+          sudo apt install -y cmake build-essential ninja-build libssl-dev
+
+      - name: Clone liboqs
+        run: git clone --branch main --single-branch --depth 1 https://github.com/open-quantum-safe/liboqs.git
+
+      - name: Build liboqs
+        run: |
+          mkdir build
+          cd build
+          cmake .. -G"Ninja" -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON
+          sudo ninja install
+        working-directory: liboqs
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+
+      - name: Resolve all maven project dependencies
+        run: mvn dependency:go-offline
+
+      - name: Build liboqs-java and run tests
+        run: |
+          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
+          mvn package
+
+      - name: Compile KEM, Signatures and Rand examples
+        run: |
+          javac -cp target/liboqs-java.jar examples/KEMExample.java
+          javac -cp target/liboqs-java.jar examples/SigExample.java
+          javac -cp target/liboqs-java.jar examples/RandExample.java
+
+      - name: Run KEM, Signatures and Rand examples
+        run: |
+          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
+          java -Djava.library.path=target/ -cp target/liboqs-java.jar:examples/ KEMExample
+          java -Djava.library.path=target/ -cp target/liboqs-java.jar:examples/ SigExample
+          java -Djava.library.path=target/ -cp target/liboqs-java.jar:examples/ RandExample
