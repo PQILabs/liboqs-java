@@ -33,27 +33,35 @@ public class Common {
             System.loadLibrary("oqs-jni");
         // Otherwise load the library from the liboqs-java.jar
         } catch (UnsatisfiedLinkError e) {
-            String libName = "llliboqs-jni.so";
-            if (Common.isLinux()) {
-                libName = "liboqs-jni.so";
-            } else if (Common.isMac()) {
-                libName = "liboqs-jni.jnilib";
-            } else if (Common.isWindows()) {
-                libName = "oqs-jni.dll";
-            }
-            URL url = KEMs.class.getResource("/" + libName);
-            File tmpDir;
-            try {
-                tmpDir = Files.createTempDirectory("oqs-native-lib").toFile();
-                tmpDir.deleteOnExit();
-                File nativeLibTmpFile = new File(tmpDir, libName);
-                nativeLibTmpFile.deleteOnExit();
-                InputStream in = url.openStream();
-                Files.copy(in, nativeLibTmpFile.toPath());
-                System.load(nativeLibTmpFile.getAbsolutePath());
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            System.out.println("Native library not found in java.library.path. Loading from JAR...");
+            loadNativeLibraryFromResources();
+        }
+    }
+
+    private static void loadNativeLibraryFromResources() {
+        String libName = "llliboqs-jni.so";
+        if (Common.isLinux()) {
+            libName = "liboqs-jni.so";
+        } else if (Common.isMac()) {
+            libName = "liboqs-jni.jnilib";
+        } else if (Common.isWindows()) {
+            libName = "oqs-jni.dll";
+        }
+        URL url = KEMs.class.getResource("/" + libName);
+        if(url == null) {
+            throw new RuntimeException("Native library not found in JAR: " + libName);
+        }
+        File tmpDir;
+        try {
+            tmpDir = Files.createTempDirectory("oqs-native-lib").toFile();
+            tmpDir.deleteOnExit();
+            File nativeLibTmpFile = new File(tmpDir, libName);
+            nativeLibTmpFile.deleteOnExit();
+            InputStream in = url.openStream();
+            Files.copy(in, nativeLibTmpFile.toPath());
+            System.load(nativeLibTmpFile.getAbsolutePath());
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
         }
     }
 
