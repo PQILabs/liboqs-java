@@ -31,6 +31,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        submodules: true  # Fetch submodules
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
@@ -48,10 +50,10 @@ jobs:
       name: Build project (C/C++)
       shell: bash
       run: |
-        mkdir -p build
-        cd build
-        cmake .. -G"Ninja"
-        ninja
+        mkdir -p liboqs/build
+        cd liboqs/build
+        cmake .. -G"Ninja" -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON
+        ninja install
 
     - if: matrix.build-mode == 'manual' && matrix.language == 'java-kotlin'
       name: Build project (Java/Kotlin)
