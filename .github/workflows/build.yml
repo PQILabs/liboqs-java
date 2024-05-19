@@ -15,8 +15,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        java-version: ['11', '17', '21']
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        java-version: [ '11', '17', '21' ]
 
     steps:
       - name: Checkout code
@@ -40,12 +40,22 @@ jobs:
           sudo apt update -qq
           sudo apt install -y cmake build-essential ninja-build libssl-dev
 
-      - name: Build liboqs
+      - if: matrix.os == 'windows-latest'
+        name: Build liboqs
         run: |
           mkdir build
           cd build
           cmake .. -G"Ninja" -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON
+          ninja install
         working-directory: liboqs
+
+      - if: matrix.os != 'windows-latest'
+        name: Build liboqs
+        run: |
+          mkdir build
+          cd build
+          cmake .. -G"Ninja" -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON
+          sudo ninja install
 
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v4
